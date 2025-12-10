@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理想照进现实：从理想气体到范德华方程</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%); color: #333; line-height: 1.6; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+        header { text-align: center; border-bottom: 3px solid #4a90e2; padding-bottom: 20px; margin-bottom: 30px; }
+        h1 { color: #2c3e50; }
+        .subtitle { color: #7f8c8d; font-size: 1.2em; }
+        section { margin-bottom: 40px; padding: 25px; border-radius: 15px; background: #f9fbfd; border-left: 5px solid #3498db; }
+        h2 { color: #2980b9; border-bottom: 2px dashed #bdc3c7; padding-bottom: 10px; }
+        .model-box { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; }
+        .card { flex: 1; min-width: 300px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .card.ideal { border-top: 5px solid #2ecc71; }
+        .card.real { border-top: 5px solid #e74c3c; }
+        .formula { font-size: 1.4em; text-align: center; background: #f1f8ff; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Cambria Math', serif; }
+        .controls { background: #e8f4fc; padding: 20px; border-radius: 12px; margin: 20px 0; }
+        .slider-container { margin: 15px 0; }
+        label { display: inline-block; width: 150px; font-weight: bold; }
+        input[type="range"] { width: 70%; vertical-align: middle; }
+        .value { display: inline-block; width: 80px; text-align: right; font-weight: bold; color: #2c3e50; }
+        #gasSelector { padding: 8px 15px; font-size: 1em; border-radius: 8px; border: 2px solid #3498db; }
+        .chart-container { position: relative; height: 500px; width: 100%; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .comparison-table th, .comparison-table td { border: 1px solid #bdc3c7; padding: 12px; text-align: left; }
+        .comparison-table th { background-color: #3498db; color: white; }
+        .comparison-table tr:nth-child(even) { background-color: #f2f2f2; }
+        .takeaway { background: #fffde7; border-left: 5px solid #f1c40f; padding: 20px; font-style: italic; }
+        footer { text-align: center; margin-top: 40px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌌 理想照进现实</h1>
+            <p class="subtitle">从理想气体模型到范德华方程的物理化学之旅</p >
+            <p><em>一个揭示理论如何逼近真实世界的交互式探索</em></p >
+        </header>
+
+        <section>
+            <h2>📚 核心理念：为何需要“理想模型”？</h2>
+            <p>在物理化学中，我们常常从最简单的、忽略次要因素的“理想模型”出发，以抓住现象的本质和规律。理想气体模型就是其中最经典的范例。它像一把精准的“零级近似”尺子，帮助我们度量真实世界的复杂偏差。</p >
+        </section>
+
+        <section>
+            <h2>⚖️ 两种模型的对比</h2>
+            <div class="model-box">
+                <div class="card ideal">
+                    <h3>🧪 理想气体模型</h3>
+                    <p><strong>核心假设：</strong></p >
+                    <ul>
+                        <li>分子是体积为零的质点。</li>
+                        <li>分子间无相互作用力（除弹性碰撞）。</li>
+                        <li>碰撞完全弹性。</li>
+                    </ul>
+                    <div class="formula">PV = nRT</div>
+                    <p><strong>适用条件：</strong>高温、低压。此时分子动能大、间距大，假设最接近现实。</p >
+                </div>
+                <div class="card real">
+                    <h3>🌍 实际气体与范德华修正</h3>
+                    <p><strong>对现实的考量：</strong></p >
+                    <ul>
+                        <li>分子有固有体积 (b)。</li>
+                        <li>分子间存在吸引力 (a)。</li>
+                    </ul>
+                    <div class="formula">(P + a(n/V)²)(V - nb) = nRT</div>
+                    <p><strong>方程解读：</strong>压力项增加（因吸引力减弱碰撞），体积项减少（扣除分子自身体积）。</p >
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🧮 参数对比表</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>特征</th>
+                        <th>理想气体</th>
+                        <th>实际气体 (范德华)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>分子体积</td><td>为零</td><td>为正常数 b</td></tr>
+                    <tr><td>分子间力</td><td>无</td><td>有吸引力 (参数 a)</td></tr>
+                    <tr><td>状态方程</td><td>PV = nRT</td><td>(P + a/v²)(v - b) = RT</td></tr>
+                    <tr><td>压缩因子 Z = PV/RT</td><td>恒为 1</td><td>随 P, T 变化，可大于或小于 1</td></tr>
+                    <tr><td>适用性</td><td>高温、低压下的近似</td><td>更宽范围，尤其在中压区更准确</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>📊 交互仿真：压缩因子 (Z) 随压强的变化</h2>
+            <p>压缩因子 <strong>Z = PV / (nRT)</strong> 是衡量气体“非理想性”的关键指标。Z=1代表理想气体。调整下列参数，观察理想气体与实际气体（范德华）的偏离。</p >
+            
+            <div class="controls">
+                <div class="slider-container">
+                    <label for="temperature">温度 T (K):</label>
+                    <input type="range" id="temperature" min="100" max="600" value="300" step="10">
+                    <span class="value" id="tempValue">300</span> K
+                </div>
+                <div class="slider-container">
+                    <label for="gas">选择气体:</label>
+                    <select id="gasSelector">
+                        <option value="N2" data-a="1.39" data-b="0.0391">氮气 (N₂) - a=1.39, b=0.0391</option>
+                        <option value="CO2" data-a="3.59" data-b="0.0427">二氧化碳 (CO₂) - a=3.59, b=0.0427</option>
+                        <option value="H2" data-a="0.244" data-b="0.0266">氢气 (H₂) - a=0.244, b=0.0266</option>
+                        <option value="H2O" data-a="5.46" data-b="0.0305">水蒸气 (H₂O) - a=5.46, b=0.0305</option>
+                    </select>
+                </div>
+                <p><small>参数 a (bar·L²/mol²) 和 b (L/mol) 代表分子间吸引力和分子体积。</small></p >
+            </div>
+
+            <div class="chart-container">
+                <canvas id="zFactorChart"></canvas>
+            </div>
+        </section>
+
+        <section class="takeaway">
+            <h2>💡 核心启示</h2>
+            <p>理想气体模型并非“错误”，而是一个强大的**理论起点**。范德华方程通过引入两个可测量的物理常数（a, b），优雅地搭建了从“理想”通向“现实”的桥梁。这种“建立理想模型 → 与实验对比 → 系统化修正”的方法论，是整个物理化学乃至科学研究的精髓。</p >
+            <p>思考：如果压强极高或温度极低，范德华方程还足够精确吗？这又将引向更复杂的状态方程（如维里方程、立方型状态方程），这正是科学不断逼近真理的旅程。</p >
+        </section>
+
+        <footer>
+            <p>物理化学交互作业 | 制作日期：2025年11月 | 设计目标：展示理想模型到现实的修正过程</p >
+            <p>© 此网页内容基于物理化学通用知识创作，用于教学演示。</p >
+        </footer>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const tempSlider = docume
